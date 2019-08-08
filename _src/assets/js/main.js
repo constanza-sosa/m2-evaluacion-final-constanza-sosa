@@ -5,13 +5,13 @@ console.log('>> Ready :)');
 //buscamos los campos del HTML
 const input = document.querySelector('.main__input');
 const button = document.querySelector('.main__button');
-const mainContainer = document.querySelector('.main__container');
+const mainContainer = document.querySelector('.list__container');
 
 const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
 const favsContainer = document.querySelector('.fav__container');
-const favsArray = [];
-
+const favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
+// const favsArray = [];
 // function createNewElement(myElement, myClass, myContent ) {
 //   const newElement = document.createElement(myElement);
 //   newElement.classList.add(myClass);
@@ -20,15 +20,15 @@ const favsArray = [];
 //   return newElement;
 // }
 
+writeFavsArray();
+
 function searchShow(){
   const searchedShow = input.value;
   const endpoint = `${baseUrl+searchedShow}`;
-  console.log(endpoint);
 
   fetch(endpoint)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
 
       mainContainer.innerHTML = '';
       const newList = document.createElement('ul');
@@ -39,7 +39,6 @@ function searchShow(){
         const imageAlt = data[i].show.name;
         const id = data[i].show.id;
         // const show = data[i].show;
-        console.log(data[i].show.name);
 
         let imageURL = '';
         if (data[i].show.image === null){
@@ -86,111 +85,68 @@ function searchShow(){
 
 function addFav(event){
   const selectedShow = event.currentTarget;
+  console.log(selectedShow);
   const showId = selectedShow.getAttribute('id');
   const shwowTitle = selectedShow.querySelector('.show__list-title').innerHTML;
   const showImage = selectedShow.querySelector('.show__list-image').src;
-  // console.log(showImage);
-  const favShow = {
-    'id': showId,
-    'title': shwowTitle,
-    'image': showImage
+  // const favShow = {
+  //   'id': showId,
+  //   'title': shwowTitle,
+  //   'image': showImage
+  // };
 
-  };
 
   selectedShow.classList.toggle('show__fav');
 
   if (selectedShow.classList.contains('show__fav')) {
-
     if (favsArray.includes(shwowTitle) === false) {
-      favsArray.push(favShow);
-      writeArray();
-      // console.log(favsArray);
+      favsArray.push(shwowTitle);
+      writeFavsArray();
+      localStorage.setItem('itemsArray', JSON.stringify(favsArray));
     }
-
   } else {
-    // const index = favsArray.indexOf(favShow);
-    // if (index > -1) {
-    //   favsArray.splice(index, 1);
-    favsArray.splice (favsArray.indexOf(favShow), 1);
-    writeArray();
-    // console.log(favsArray.indexOf(favShow));
-    // console.log(favsArray);
+    const index = favsArray.indexOf(shwowTitle);
+    console.log(favsArray.indexOf(shwowTitle));
+    favsArray.splice(index, 1);
+
+    writeFavsArray();
+    console.log(favsArray);
+    localStorage.setItem('itemsArray', JSON.stringify(favsArray));
   }
 }
 
-
-//   function writeArray(){
-//     const newFavList = document.createElement('ul');
-//     newFavList.classList.add('fav__list');
-
-
-//     for(let i = 0; i < favsArray.length; i++){
-//       console.log(favsArray.length);
-//       favsContainer.innerHTML = '';
-
-//       const newFavLi = document.createElement('li');
-//       newFavLi.classList.add('fav__list-item');
-//       newFavLi.id = showId;
-
-//       const newFavDiv = document.createElement('div');
-//       newFavDiv.classList.add('fav__list-container');
-
-//       const newFavImage = document.createElement('img');
-//       newFavImage.classList.add('fav__list-image');
-//       newFavImage.src = showImage;
-//       newFavImage.alt = shwowTitle;
-
-//       const newFavTitle = document.createElement('h2');
-//       newFavTitle.classList.add('show__list-title');
-//       const titleFavContent = document.createTextNode(shwowTitle);
-//       newFavTitle.appendChild(titleFavContent);
-
-//       newFavDiv.appendChild(newFavImage);
-//       newFavDiv.appendChild(newFavTitle);
-//       newFavLi.appendChild(newFavDiv);
-//       newFavList.appendChild(newFavLi);
-//     }
-
-//     favsContainer.appendChild(newFavList);
-//     console.log(favsArray);
-//   }
-// }
-
-function writeArray(){
+function writeFavsArray(){
 
   favsContainer.innerHTML = '';
   const newFavList = document.createElement('ul');
   newFavList.classList.add('fav__list');
 
   for (const item of favsArray){
-
-
-    console.log(favsArray.length);
+      console.log(item);
 
     const newFavLi = document.createElement('li');
     newFavLi.classList.add('fav__list-item');
-    newFavLi.id = item.id;
+    newFavLi.id = item.showId;
 
     const newFavDiv = document.createElement('div');
     newFavDiv.classList.add('fav__list-container');
 
-    const newFavImage = document.createElement('img');
-    newFavImage.classList.add('fav__list-image');
-    newFavImage.src = item.image;
-    newFavImage.alt = item.title;
+    // const newFavImage = document.createElement('img');
+    // newFavImage.classList.add('fav__list-image');
+    // newFavImage.src = item.image;
+    // newFavImage.alt = item.title;
 
     const newFavTitle = document.createElement('h2');
     newFavTitle.classList.add('show__list-title');
-    const titleFavContent = document.createTextNode(item.title);
+    const titleFavContent = document.createTextNode(item);
     newFavTitle.appendChild(titleFavContent);
 
-    newFavDiv.appendChild(newFavImage);
+    // newFavDiv.appendChild(newFavImage);
     newFavDiv.appendChild(newFavTitle);
     newFavLi.appendChild(newFavDiv);
     newFavList.appendChild(newFavLi);
   }
   favsContainer.appendChild(newFavList);
-  console.log(favsArray);
 }
 
 //lsitener
