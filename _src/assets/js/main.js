@@ -9,6 +9,7 @@ const mainContainer = document.querySelector('.main__container');
 
 const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
+const favsContainer = document.querySelector('.fav__container');
 const favsArray = [];
 
 // function createNewElement(myElement, myClass, myContent ) {
@@ -29,13 +30,14 @@ function searchShow(){
     .then(data => {
       console.log(data);
 
+      mainContainer.innerHTML = '';
       const newList = document.createElement('ul');
       newList.classList.add('show__list');
 
       for (let i = 0; i < data.length ; i++){
         const name = data[i].show.name;
         const imageAlt = data[i].show.name;
-        const showId = data[i].show.id;
+        const id = data[i].show.id;
         // const show = data[i].show;
         console.log(data[i].show.name);
 
@@ -49,7 +51,7 @@ function searchShow(){
 
         const newLi = document.createElement('li');
         newLi.classList.add('show__list-item');
-        newLi.id = showId;
+        newLi.id = id;
 
         const newDiv = document.createElement('div');
         newDiv.classList.add('show__list-container');
@@ -61,6 +63,7 @@ function searchShow(){
 
         const newTitle = document.createElement('h2');
         newTitle.classList.add('show__list-title');
+        newTitle.classList.add(`'show__list-title${id}'`);
         const titleContent = document.createTextNode(name);
         newTitle.appendChild(titleContent);
 
@@ -68,8 +71,6 @@ function searchShow(){
         newDiv.appendChild(newTitle);
         newLi.appendChild(newDiv);
         newList.appendChild(newLi);
-
-
       }
       mainContainer.appendChild(newList);
 
@@ -84,9 +85,112 @@ function searchShow(){
 }
 
 function addFav(event){
-  const selected = event.currentTarget;
-  console.log(selected);
-  selected.classList.toggle('show__fav');
+  const selectedShow = event.currentTarget;
+  const showId = selectedShow.getAttribute('id');
+  const shwowTitle = selectedShow.querySelector('.show__list-title').innerHTML;
+  const showImage = selectedShow.querySelector('.show__list-image').src;
+  // console.log(showImage);
+  const favShow = {
+    'id': showId,
+    'title': shwowTitle,
+    'image': showImage
+
+  };
+
+  selectedShow.classList.toggle('show__fav');
+
+  if (selectedShow.classList.contains('show__fav')) {
+
+    if (favsArray.includes(shwowTitle) === false) {
+      favsArray.push(favShow);
+      writeArray();
+      // console.log(favsArray);
+    }
+
+  } else {
+    // const index = favsArray.indexOf(favShow);
+    // if (index > -1) {
+    //   favsArray.splice(index, 1);
+    favsArray.splice (favsArray.indexOf(favShow), 1);
+    writeArray();
+    // console.log(favsArray.indexOf(favShow));
+    // console.log(favsArray);
+  }
+}
+
+
+//   function writeArray(){
+//     const newFavList = document.createElement('ul');
+//     newFavList.classList.add('fav__list');
+
+
+//     for(let i = 0; i < favsArray.length; i++){
+//       console.log(favsArray.length);
+//       favsContainer.innerHTML = '';
+
+//       const newFavLi = document.createElement('li');
+//       newFavLi.classList.add('fav__list-item');
+//       newFavLi.id = showId;
+
+//       const newFavDiv = document.createElement('div');
+//       newFavDiv.classList.add('fav__list-container');
+
+//       const newFavImage = document.createElement('img');
+//       newFavImage.classList.add('fav__list-image');
+//       newFavImage.src = showImage;
+//       newFavImage.alt = shwowTitle;
+
+//       const newFavTitle = document.createElement('h2');
+//       newFavTitle.classList.add('show__list-title');
+//       const titleFavContent = document.createTextNode(shwowTitle);
+//       newFavTitle.appendChild(titleFavContent);
+
+//       newFavDiv.appendChild(newFavImage);
+//       newFavDiv.appendChild(newFavTitle);
+//       newFavLi.appendChild(newFavDiv);
+//       newFavList.appendChild(newFavLi);
+//     }
+
+//     favsContainer.appendChild(newFavList);
+//     console.log(favsArray);
+//   }
+// }
+
+function writeArray(){
+
+  favsContainer.innerHTML = '';
+  const newFavList = document.createElement('ul');
+  newFavList.classList.add('fav__list');
+
+  for (const item of favsArray){
+
+
+    console.log(favsArray.length);
+
+    const newFavLi = document.createElement('li');
+    newFavLi.classList.add('fav__list-item');
+    newFavLi.id = item.id;
+
+    const newFavDiv = document.createElement('div');
+    newFavDiv.classList.add('fav__list-container');
+
+    const newFavImage = document.createElement('img');
+    newFavImage.classList.add('fav__list-image');
+    newFavImage.src = item.image;
+    newFavImage.alt = item.title;
+
+    const newFavTitle = document.createElement('h2');
+    newFavTitle.classList.add('show__list-title');
+    const titleFavContent = document.createTextNode(item.title);
+    newFavTitle.appendChild(titleFavContent);
+
+    newFavDiv.appendChild(newFavImage);
+    newFavDiv.appendChild(newFavTitle);
+    newFavLi.appendChild(newFavDiv);
+    newFavList.appendChild(newFavLi);
+  }
+  favsContainer.appendChild(newFavList);
+  console.log(favsArray);
 }
 
 //lsitener
