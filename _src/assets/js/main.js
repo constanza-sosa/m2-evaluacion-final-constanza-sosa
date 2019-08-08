@@ -9,6 +9,8 @@ const mainContainer = document.querySelector('.main__container');
 
 const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
+const favsArray = [];
+
 // function createNewElement(myElement, myClass, myContent ) {
 //   const newElement = document.createElement(myElement);
 //   newElement.classList.add(myClass);
@@ -27,13 +29,15 @@ function searchShow(){
     .then(data => {
       console.log(data);
 
+      const newList = document.createElement('ul');
+      newList.classList.add('show__list');
+
       for (let i = 0; i < data.length ; i++){
         const name = data[i].show.name;
         const imageAlt = data[i].show.name;
         const showId = data[i].show.id;
-        const show = data[i].show;
+        // const show = data[i].show;
         console.log(data[i].show.name);
-
 
         let imageURL = '';
         if (data[i].show.image === null){
@@ -43,16 +47,12 @@ function searchShow(){
           imageURL = data[i].show.image.medium;
         }
 
-        const newList = document.createElement('ul');
-        newList.classList.add('show__list');
-
         const newLi = document.createElement('li');
         newLi.classList.add('show__list-item');
         newLi.id = showId;
 
         const newDiv = document.createElement('div');
         newDiv.classList.add('show__list-container');
-
 
         const newImage = document.createElement('img');
         newImage.classList.add('show__list-image');
@@ -66,16 +66,28 @@ function searchShow(){
 
         newDiv.appendChild(newImage);
         newDiv.appendChild(newTitle);
-        newList.appendChild(newDiv);
-        mainContainer.appendChild(newList);
+        newLi.appendChild(newDiv);
+        newList.appendChild(newLi);
 
 
+      }
+      mainContainer.appendChild(newList);
+
+      const allSeries = document.querySelectorAll('.show__list-item');
+
+      for (let i=0; i<allSeries.length; i++) {
+        allSeries[i].addEventListener('click', addFav);
       }
 
 
     });
 }
 
+function addFav(event){
+  const selected = event.currentTarget;
+  console.log(selected);
+  selected.classList.toggle('show__fav');
+}
 
 //lsitener
 button.addEventListener('click', searchShow);
