@@ -1,8 +1,16 @@
 @import 'core/settings';
 @import 'core/links';
 
-body {
-	background: url('../images/logo-adalab-80px.png') center center no-repeat $color-white;
+.app {
+	background:$color-white;
 	margin: 0;
 	height: 100vh;
+}
+
+// .header__title { }
+// .page__main { }
+// .main__input { }
+// .main__button { }
+.main__container {
+  background-color: pink;
 }
