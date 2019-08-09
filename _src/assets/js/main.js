@@ -37,7 +37,7 @@ function searchShow(){
       for (let i = 0; i < data.length ; i++){
         const name = data[i].show.name;
         const imageAlt = data[i].show.name;
-        const id = data[i].show.id;
+        const id = `a${data[i].show.id}`;
         // const show = data[i].show;
 
         let imageURL = '';
@@ -85,33 +85,31 @@ function searchShow(){
 
 function addFav(event){
   const selectedShow = event.currentTarget;
-  console.log(selectedShow);
   const showId = selectedShow.getAttribute('id');
   const shwowTitle = selectedShow.querySelector('.show__list-title').innerHTML;
   const showImage = selectedShow.querySelector('.show__list-image').src;
-  // const favShow = {
-  //   'id': showId,
-  //   'title': shwowTitle,
-  //   'image': showImage
-  // };
+  const favShow = {
+    'id': showId,
+    'title': shwowTitle,
+    'image': showImage
+  };
 
 
   selectedShow.classList.toggle('show__fav');
 
   if (selectedShow.classList.contains('show__fav')) {
-    if (favsArray.includes(shwowTitle) === false) {
-      favsArray.push(shwowTitle);
-      writeFavsArray();
+    if (favsArray.includes(favShow) === false) {
+      favsArray.push(favShow);
       localStorage.setItem('itemsArray', JSON.stringify(favsArray));
+      writeFavsArray();
     }
   } else {
-    const index = favsArray.indexOf(shwowTitle);
-    console.log(favsArray.indexOf(shwowTitle));
+    const index = favsArray.indexOf(favShow);
+    console.log(favsArray.indexOf(favShow));
     favsArray.splice(index, 1);
 
-    writeFavsArray();
-    console.log(favsArray);
     localStorage.setItem('itemsArray', JSON.stringify(favsArray));
+    writeFavsArray();
   }
 }
 
@@ -122,26 +120,25 @@ function writeFavsArray(){
   newFavList.classList.add('fav__list');
 
   for (const item of favsArray){
-      console.log(item);
 
     const newFavLi = document.createElement('li');
     newFavLi.classList.add('fav__list-item');
-    newFavLi.id = item.showId;
+    newFavLi.id = item.id;
 
     const newFavDiv = document.createElement('div');
     newFavDiv.classList.add('fav__list-container');
 
-    // const newFavImage = document.createElement('img');
-    // newFavImage.classList.add('fav__list-image');
-    // newFavImage.src = item.image;
-    // newFavImage.alt = item.title;
+    const newFavImage = document.createElement('img');
+    newFavImage.classList.add('fav__list-image');
+    newFavImage.src = item.image;
+    newFavImage.alt = item.title;
 
     const newFavTitle = document.createElement('h2');
     newFavTitle.classList.add('show__list-title');
-    const titleFavContent = document.createTextNode(item);
+    const titleFavContent = document.createTextNode(item.title);
     newFavTitle.appendChild(titleFavContent);
 
-    // newFavDiv.appendChild(newFavImage);
+    newFavDiv.appendChild(newFavImage);
     newFavDiv.appendChild(newFavTitle);
     newFavLi.appendChild(newFavDiv);
     newFavList.appendChild(newFavLi);
