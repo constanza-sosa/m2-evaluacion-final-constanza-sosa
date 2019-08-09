@@ -114,6 +114,8 @@ function writeFavsArray(){
 
   favsContainer.innerHTML = '';
   const newFavList = document.createElement('ul');
+  const titleFavList = document.createTextNode('Favoritos');
+  newFavList.appendChild(titleFavList);
   newFavList.classList.add('fav__list');
 
   for (const item of favsArray){
