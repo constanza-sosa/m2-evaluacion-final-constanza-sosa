@@ -108,7 +108,7 @@ function writeFavsArray(){
 
   favsContainer.innerHTML = '';
   const newFavList = document.createElement('ul');
-  const titleFavList = document.createTextNode('Favoritos');
+  const titleFavList = document.createTextNode('');
   newFavList.appendChild(titleFavList);
   newFavList.classList.add('fav__list');
 
@@ -116,6 +116,7 @@ function writeFavsArray(){
   const resetButtonContent = document.createTextNode('Reset');
   resetButton.appendChild(resetButtonContent);
   resetButton.classList.add('reset__button');
+
 
   for (const item of favsArray){
 
@@ -138,7 +139,7 @@ function writeFavsArray(){
 
     const newFavButton = document.createElement('button');
     newFavButton.classList.add('close__button');
-    const buttonFavContent = document.createTextNode('Borrar');
+    const buttonFavContent = document.createTextNode('X');
     newFavButton.setAttribute('type', 'button');
     newFavButton.appendChild(buttonFavContent);
 
@@ -174,7 +175,8 @@ function deleteStorage(event){
 }
 
 function resetFav(){
-  favsContainer.innerHTML = 'Añadir Favoritos';
+  favsContainer.innerHTML = '';
+  mainContainer.innerHTML = '';
   localStorage.removeItem('itemsArray');
 }
 
