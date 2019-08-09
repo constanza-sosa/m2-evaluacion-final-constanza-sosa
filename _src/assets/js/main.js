@@ -65,11 +65,10 @@ function searchShow(){
       }
       mainContainer.appendChild(newList);
 
-
       const allSeries = document.querySelectorAll('.show__list-item');
 
-      for (let i=0; i<allSeries.length; i++) {
-        allSeries[i].addEventListener('click', addFav);
+      for (const item of allSeries) {
+        item.addEventListener('click', addFav);
       }
 
 
@@ -87,11 +86,11 @@ function addFav(event){
     'image': showImage
   };
 
-
   selectedShow.classList.toggle('show__fav');
 
   if (selectedShow.classList.contains('show__fav')) {
-    if (favsArray.includes(favShow) === false) {
+    let obj = favsArray.find(data => data.id === `${showId}`);
+    if (obj === undefined) {
       favsArray.push(favShow);
       writeFavsArray();
       localStorage.setItem('itemsArray', JSON.stringify(favsArray));
@@ -112,6 +111,11 @@ function writeFavsArray(){
   const titleFavList = document.createTextNode('Favoritos');
   newFavList.appendChild(titleFavList);
   newFavList.classList.add('fav__list');
+
+  const resetButton = document.createElement('button');
+  const resetButtonContent = document.createTextNode('Reset');
+  resetButton.appendChild(resetButtonContent);
+  resetButton.classList.add('reset__button');
 
   for (const item of favsArray){
 
@@ -145,11 +149,17 @@ function writeFavsArray(){
     newFavList.appendChild(newFavLi);
 
   }
+  newFavList.appendChild(resetButton);
   favsContainer.appendChild(newFavList);
+
   const closeButton = document.querySelectorAll('.close__button');
-  for (let i=0; i<closeButton.length; i++) {
-    closeButton[i].addEventListener('click', deleteStorage);
+
+  for (const item of closeButton) {
+    item.addEventListener('click', deleteStorage);
   }
+
+  const resetButtonli = document.querySelector('.reset__button');
+  resetButtonli.addEventListener('click', resetFav);
 }
 
 function deleteStorage(event){
@@ -161,6 +171,11 @@ function deleteStorage(event){
   favsArray.splice(index, 1);
   localStorage.setItem('itemsArray', JSON.stringify(favsArray));
   writeFavsArray();
+}
+
+function resetFav(){
+  favsContainer.innerHTML = 'Añadir Favoritos';
+  localStorage.removeItem('itemsArray');
 }
 
 button.addEventListener('click', searchShow);
