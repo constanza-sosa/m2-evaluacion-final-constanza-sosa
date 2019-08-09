@@ -38,8 +38,6 @@ function searchShow(){
         const name = data[i].show.name;
         const imageAlt = data[i].show.name;
         const id = `a${data[i].show.id}`;
-        // const show = data[i].show;
-
         let imageURL = '';
         if (data[i].show.image === null){
           imageURL = 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
@@ -100,8 +98,8 @@ function addFav(event){
   if (selectedShow.classList.contains('show__fav')) {
     if (favsArray.includes(favShow) === false) {
       favsArray.push(favShow);
-      localStorage.setItem('itemsArray', JSON.stringify(favsArray));
       writeFavsArray();
+      localStorage.setItem('itemsArray', JSON.stringify(favsArray));
     }
   } else {
     const index = favsArray.indexOf(favShow);
