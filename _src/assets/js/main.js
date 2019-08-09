@@ -67,8 +67,14 @@ function searchShow(){
         newDiv.appendChild(newTitle);
         newLi.appendChild(newDiv);
         newList.appendChild(newLi);
+
+        let obj = favsArray.find(data => data.id === `${id}`);
+        if(obj !== undefined){
+          newLi.classList.add('show__fav');
+        }
       }
       mainContainer.appendChild(newList);
+
 
       const allSeries = document.querySelectorAll('.show__list-item');
 
