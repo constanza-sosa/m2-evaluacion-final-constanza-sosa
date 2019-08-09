@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
-
+    
     <head>
         <meta charset="UTF-8">
         <title>Final exam - Mod. 2 Constanza Sosa</title>
-        <link rel="icon" href="favicon.png"/>
+        <link rel="icon" href="favicon.png"
+        />
         <meta name="viewport" content="width=device-width, user-scalable=no">
-        <link href="https://fonts.googleapis.com/css?family=Monoton&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy&display=swap"
+        rel="stylesheet">
         <link rel="stylesheet" href="assets/css/main.css">
     </head>
-
+    
     <body class="app">
         <div class="page">
             <header class="page__header">
@@ -17,9 +19,11 @@
 
             </header>
             <main class="page__main">
-                <label for="search"></label>
-                <input id="search" type="text" class="main__input">
-                <button class="main__button">Buscar</button>
+                <form class="form" action="get" method="get">
+                    <label for="search"></label>
+                    <input id="search" type="text" class="main__input" placeholder="¡Busca tu serie!">
+                    <button type="button" class="main__button">Buscar</button>
+                </form>
                 <div class="main__container">
                     <div class="fav__container"></div>
                     <div class="list__container"></div>
