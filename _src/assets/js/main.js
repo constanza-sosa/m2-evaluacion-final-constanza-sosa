@@ -19,7 +19,6 @@ const favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
 //   newElement.appendChild(newElementContent);
 //   return newElement;
 // }
-
 writeFavsArray();
 
 function searchShow(){
@@ -34,16 +33,16 @@ function searchShow(){
       const newList = document.createElement('ul');
       newList.classList.add('show__list');
 
-      for (let i = 0; i < data.length ; i++){
-        const name = data[i].show.name;
-        const imageAlt = data[i].show.name;
-        const id = `a${data[i].show.id}`;
+      for (const item of data){
+        const name = item.show.name;
+        const imageAlt = item.show.name;
+        const id = `a${item.show.id}`;
         let imageURL = '';
-        if (data[i].show.image === null){
+        if (item.show.image === null){
           imageURL = 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
         }
         else{
-          imageURL = data[i].show.image.medium;
+          imageURL = item.show.image.medium;
         }
 
         const newLi = document.createElement('li');
