@@ -1,8 +1,5 @@
 'use strict';
 
-console.log('>> Ready :)');
-
-//buscamos los campos del HTML
 const input = document.querySelector('.main__input');
 const button = document.querySelector('.main__button');
 const mainContainer = document.querySelector('.list__container');
@@ -11,14 +8,7 @@ const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
 const favsContainer = document.querySelector('.fav__container');
 const favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
-// const favsArray = [];
-// function createNewElement(myElement, myClass, myContent ) {
-//   const newElement = document.createElement(myElement);
-//   newElement.classList.add(myClass);
-//   const newElementContent = document.createTextNode(myContent);
-//   newElement.appendChild(newElementContent);
-//   return newElement;
-// }
+
 writeFavsArray();
 
 function searchShow(){
@@ -107,10 +97,9 @@ function addFav(event){
       localStorage.setItem('itemsArray', JSON.stringify(favsArray));
     }
   } else {
-    const index = favsArray.indexOf(favShow);
-    console.log(favsArray.indexOf(favShow));
+    let obj = favsArray.find(data => data.id === `${showId}`);
+    const index = favsArray.indexOf(obj);
     favsArray.splice(index, 1);
-
     localStorage.setItem('itemsArray', JSON.stringify(favsArray));
     writeFavsArray();
   }
@@ -143,13 +132,35 @@ function writeFavsArray(){
     const titleFavContent = document.createTextNode(item.title);
     newFavTitle.appendChild(titleFavContent);
 
+    const newFavButton = document.createElement('button');
+    newFavButton.classList.add('close__button');
+    const buttonFavContent = document.createTextNode('Borrar');
+    newFavButton.setAttribute('type', 'button');
+    newFavButton.appendChild(buttonFavContent);
+
+    newFavDiv.appendChild(newFavButton);
     newFavDiv.appendChild(newFavImage);
     newFavDiv.appendChild(newFavTitle);
     newFavLi.appendChild(newFavDiv);
     newFavList.appendChild(newFavLi);
+
   }
   favsContainer.appendChild(newFavList);
+  const closeButton = document.querySelectorAll('.close__button');
+  for (let i=0; i<closeButton.length; i++) {
+    closeButton[i].addEventListener('click', deleteStorage);
+  }
 }
 
-//lsitener
+function deleteStorage(event){
+  const li = event.currentTarget.parentElement.parentElement;
+  const liId = li.id;
+
+  let obj = favsArray.find(data => data.id === `${liId}`);
+  const index = favsArray.indexOf(obj);
+  favsArray.splice(index, 1);
+  localStorage.setItem('itemsArray', JSON.stringify(favsArray));
+  writeFavsArray();
+}
+
 button.addEventListener('click', searchShow);
