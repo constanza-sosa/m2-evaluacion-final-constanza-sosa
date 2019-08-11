@@ -176,6 +176,7 @@ function deleteStorage(event){
   favsArray.splice(index, 1);
   localStorage.setItem('itemsArray', JSON.stringify(favsArray));
   writeFavsArray();
+  searchShow();
 }
 
 function resetFav(){
