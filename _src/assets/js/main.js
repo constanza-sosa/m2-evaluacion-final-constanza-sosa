@@ -11,6 +11,21 @@ let favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
 
 writeFavsArray();
 
+function createNewImageElement(myElement, myClass, mySrc, myAlt) {
+  const newElement = document.createElement(myElement);
+  newElement.classList.add(myClass);
+  newElement.src = mySrc;
+  newElement.alt = myAlt;
+  return newElement;
+}
+
+function createNewElement(myElement, myClass, myContent) {
+  const newElement = document.createElement(myElement);
+  newElement.classList.add(myClass);
+  const newElementContent = document.createTextNode(myContent);
+  newElement.appendChild(newElementContent);
+  return newElement;
+}
 
 function searchShow(){
   const searchedShow = input.value;
@@ -35,23 +50,11 @@ function searchShow(){
           imageURL = item.show.image.medium;
         }
 
-        const newLi = document.createElement('li');
-        newLi.classList.add('show__list-item');
-        newLi.id = id;
-
-        const newDiv = document.createElement('div');
-        newDiv.classList.add('show__list-container');
-
-        const newImage = document.createElement('img');
-        newImage.classList.add('show__list-image');
-        newImage.src = imageURL;
-        newImage.alt = imageAlt;
-
-        const newTitle = document.createElement('h2');
-        newTitle.classList.add('show__list-title');
-        newTitle.classList.add(`'show__list-title${id}'`);
-        const titleContent = document.createTextNode(name);
-        newTitle.appendChild(titleContent);
+        const newLi = createNewElement('li', 'show__list-item', '');
+        newLi.setAttribute('id', id);
+        const newDiv = createNewElement('div', 'show__list-container', '');
+        const newImage = createNewImageElement('img', 'show__list-image', imageURL, imageAlt);
+        const newTitle = createNewElement('h2', 'show__list-title', name);
 
         newDiv.appendChild(newImage);
         newDiv.appendChild(newTitle);
@@ -73,7 +76,6 @@ function searchShow(){
       for (const item of allSeries) {
         item.addEventListener('click', addFav);
       }
-
 
     });
 }
@@ -110,41 +112,23 @@ function addFav(event){
 function writeFavsArray(){
 
   favsContainer.innerHTML = '';
-  const newFavList = document.createElement('ul');
-  const titleFavList = document.createTextNode('Tus favoritos:');
-  newFavList.appendChild(titleFavList);
-  newFavList.classList.add('fav__list');
 
-  const resetButton = document.createElement('button');
-  const resetButtonContent = document.createTextNode('Reset');
-  resetButton.appendChild(resetButtonContent);
-  resetButton.classList.add('reset__button');
+  const newFavList = createNewElement('ul', 'fav__list', 'Tus favoritos:');
+  const resetButton = createNewElement('button', 'reset__button', 'Reset');
+  resetButton.type = button;
 
 
   for (const item of favsArray){
 
-    const newFavLi = document.createElement('li');
-    newFavLi.classList.add('fav__list-item');
+    const newFavLi = createNewElement('li', 'fav__list-item', '');
     newFavLi.id = item.id;
 
-    const newFavDiv = document.createElement('div');
-    newFavDiv.classList.add('fav__list-container');
+    const newFavDiv = createNewElement('div', 'fav__list-container', '');
+    const newFavImage = createNewImageElement('img', 'fav__list-image', item.image, item.title);
+    const newFavTitle = createNewElement('h2', 'show__list-title', item.title);
+    const newFavButton = createNewElement('button', 'close__button', 'X');
+    resetButton.type = button;
 
-    const newFavImage = document.createElement('img');
-    newFavImage.classList.add('fav__list-image');
-    newFavImage.src = item.image;
-    newFavImage.alt = item.title;
-
-    const newFavTitle = document.createElement('h2');
-    newFavTitle.classList.add('show__list-title');
-    const titleFavContent = document.createTextNode(item.title);
-    newFavTitle.appendChild(titleFavContent);
-
-    const newFavButton = document.createElement('button');
-    newFavButton.classList.add('close__button');
-    const buttonFavContent = document.createTextNode('X');
-    newFavButton.setAttribute('type', 'button');
-    newFavButton.appendChild(buttonFavContent);
 
     newFavDiv.appendChild(newFavButton);
     newFavDiv.appendChild(newFavImage);
