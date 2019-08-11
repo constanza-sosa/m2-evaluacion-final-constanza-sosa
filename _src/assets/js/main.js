@@ -7,7 +7,7 @@ const mainContainer = document.querySelector('.list__container');
 const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
 const favsContainer = document.querySelector('.fav__container');
-const favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
+let favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
 
 writeFavsArray();
 
@@ -62,6 +62,9 @@ function searchShow(){
         let obj = favsArray.find(data => data.id === `${id}`);
         if(obj !== undefined){
           newLi.classList.add('show__fav');
+        }
+        else {
+          newLi.classList.remove('show__fav');
         }
       }
       mainContainer.appendChild(newList);
@@ -179,6 +182,7 @@ function resetFav(){
   favsContainer.innerHTML = '';
   mainContainer.innerHTML = '';
   localStorage.removeItem('itemsArray');
+  favsArray = [];
 }
 
 button.addEventListener('click', searchShow);
