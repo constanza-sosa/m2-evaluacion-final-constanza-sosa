@@ -11,6 +11,7 @@ const favsArray = JSON.parse(localStorage.getItem('itemsArray')) || [];
 
 writeFavsArray();
 
+
 function searchShow(){
   const searchedShow = input.value;
   const endpoint = `${baseUrl+searchedShow}`;
@@ -181,3 +182,10 @@ function resetFav(){
 }
 
 button.addEventListener('click', searchShow);
+input.addEventListener('keyup', function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    console.log('hola');
+    button.click();
+  }
+});
