@@ -101,12 +101,16 @@ function addFav(event){
       writeFavsArray();
     }
   } else {
-    let obj = favsArray.find(data => data.id === `${showId}`);
-    const index = favsArray.indexOf(obj);
-    favsArray.splice(index, 1);
-    localStorage.setItem('itemsArray', JSON.stringify(favsArray));
-    writeFavsArray();
+    deleteObject(showId);
   }
+}
+
+function deleteObject(id){
+  let obj = favsArray.find(data => data.id === `${id}`);
+  const index = favsArray.indexOf(obj);
+  favsArray.splice(index, 1);
+  localStorage.setItem('itemsArray', JSON.stringify(favsArray));
+  writeFavsArray();
 }
 
 function writeFavsArray(){
@@ -159,11 +163,7 @@ function deleteStorage(event){
   const li = event.currentTarget.parentElement.parentElement;
   const liId = li.id;
 
-  let obj = favsArray.find(data => data.id === `${liId}`);
-  const index = favsArray.indexOf(obj);
-  favsArray.splice(index, 1);
-  localStorage.setItem('itemsArray', JSON.stringify(favsArray));
-  writeFavsArray();
+  deleteObject(liId);
 
   const allSeries = document.querySelectorAll('.show__list-item');
   for (const item of allSeries){
