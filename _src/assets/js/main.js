@@ -184,8 +184,6 @@ function resetFav(){
 button.addEventListener('click', searchShow);
 input.addEventListener('keyup', function(event) {
   if (event.keyCode === 13) {
-    event.preventDefault();
-    console.log('hola');
     button.click();
   }
 });
