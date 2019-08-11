@@ -111,7 +111,7 @@ function writeFavsArray(){
 
   favsContainer.innerHTML = '';
   const newFavList = document.createElement('ul');
-  const titleFavList = document.createTextNode('');
+  const titleFavList = document.createTextNode('Tus favoritos:');
   newFavList.appendChild(titleFavList);
   newFavList.classList.add('fav__list');
 
@@ -155,6 +155,11 @@ function writeFavsArray(){
   }
   newFavList.appendChild(resetButton);
   favsContainer.appendChild(newFavList);
+
+  if (favsArray.length === 0){
+    newFavList.classList.add('hidden');
+    resetButton.classList.add('hidden');
+  }
 
   const closeButton = document.querySelectorAll('.close__button');
 
