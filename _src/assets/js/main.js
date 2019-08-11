@@ -19,7 +19,6 @@ function searchShow(){
   fetch(endpoint)
     .then(response => response.json())
     .then(data => {
-
       mainContainer.innerHTML = '';
       const newList = document.createElement('ul');
       newList.classList.add('show__list');
@@ -96,8 +95,8 @@ function addFav(event){
     let obj = favsArray.find(data => data.id === `${showId}`);
     if (obj === undefined) {
       favsArray.push(favShow);
-      writeFavsArray();
       localStorage.setItem('itemsArray', JSON.stringify(favsArray));
+      writeFavsArray();
     }
   } else {
     let obj = favsArray.find(data => data.id === `${showId}`);
@@ -176,14 +175,23 @@ function deleteStorage(event){
   favsArray.splice(index, 1);
   localStorage.setItem('itemsArray', JSON.stringify(favsArray));
   writeFavsArray();
-  searchShow();
+
+  const allSeries = document.querySelectorAll('.show__list-item');
+  for (const item of allSeries){
+    if (item.id === `${liId}`){
+      item.classList.toggle('show__fav');
+    }
+  }
 }
 
 function resetFav(){
   favsContainer.innerHTML = '';
-  mainContainer.innerHTML = '';
   localStorage.removeItem('itemsArray');
   favsArray = [];
+  const favsSelected = document.querySelectorAll('.show__fav');
+  for (const item of favsSelected){
+    item.classList.toggle('show__fav');
+  }
 }
 
 button.addEventListener('click', searchShow);
