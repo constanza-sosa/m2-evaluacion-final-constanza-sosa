@@ -3,6 +3,7 @@
 const input = document.querySelector('.main__input');
 const button = document.querySelector('.main__button');
 const mainContainer = document.querySelector('.list__container');
+const buttonFav = document.querySelector('.fav__button');
 
 const baseUrl = 'http://api.tvmaze.com/search/shows?q=';
 
@@ -27,6 +28,7 @@ function searchShow(){
         const name = item.show.name;
         const imageAlt = item.show.name;
         const id = `a${item.show.id}`;
+        const status = item.show.status;
         let imageURL = '';
         if (item.show.image === null){
           imageURL = 'https://via.placeholder.com/210x295/ffffff/666666/?text=TV';
@@ -53,8 +55,15 @@ function searchShow(){
         const titleContent = document.createTextNode(name);
         newTitle.appendChild(titleContent);
 
+        const newPar = document.createElement('p');
+        newPar.classList.add('show__list-par');
+        const contentPar = document.createTextNode(status);
+        newPar.appendChild(contentPar);
+
+
         newDiv.appendChild(newImage);
         newDiv.appendChild(newTitle);
+        newDiv.appendChild(newPar);
         newLi.appendChild(newDiv);
         newList.appendChild(newLi);
 
@@ -180,4 +189,11 @@ function resetFav(){
   localStorage.removeItem('itemsArray');
 }
 
+function paintFavorite(){
+  for (const item of favsArray){
+    console.log(item.title);
+  }
+}
+
 button.addEventListener('click', searchShow);
+buttonFav.addEventListener('click', paintFavorite);
